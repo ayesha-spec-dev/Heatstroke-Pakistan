@@ -1,5 +1,5 @@
-# Heatstroke-Pakistan
-AI-powered heatwave risk prediction and dashboard for Pakistani cities
+# HeatShield Pakistan 🌡️
+### AI-Powered Heatwave Risk Intelligence and Decision Support System
 
 A complete, leakage-aware data science pipeline that analyzes heatwave vulnerability across three Pakistani cities — **Karachi, Multan, and Murree** (2021–2025) — and turns climate, health, infrastructure, and economic data into a risk-monitoring and policy-recommendation tool.
 
