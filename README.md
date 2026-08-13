@@ -1,72 +1,82 @@
 # HeatShield Pakistan 🌡️
+
 ### AI-Powered Heatwave Risk Intelligence and Decision Support System
 
-A complete, leakage-aware data science pipeline that analyzes heatwave vulnerability across three Pakistani cities — **Karachi, Multan, and Murree** (2021–2025) — and turns climate, health, infrastructure, and economic data into a risk-monitoring and policy-recommendation tool.
-
-Built as the final project for **DS-110: Introduction to Data Science**, Air University, Islamabad.
+A leakage-aware data science pipeline that analyzes heatwave vulnerability across three Pakistani cities — **Karachi, Multan, and Murree** — over **2021–2025** and turns climate, health, infrastructure, and economic data into a risk-intelligence and decision-support system.
 
 ---
 
 ## 📌 Overview
 
-Pakistan's summer heatwaves strain hospitals, overwhelm the power grid, and cause real economic and human loss — but there's no single dataset that connects weather, health, and infrastructure data to help authorities plan ahead. This project builds that connection.
+Pakistan's summer heatwaves place pressure on hospitals, the power grid, workers, and local economies. HeatShield Pakistan brings climate, health, infrastructure, and socioeconomic indicators together to investigate these relationships and translate the results into city-level risk insights and preparedness recommendations.
 
-The pipeline pulls together **14 different data sources** (NASA POWER, NOAA, Open-Meteo, NDMA, PBS, ILO, NEPRA, K-Electric, and others) into one consolidated dataset, then uses machine learning to predict heatstroke admissions, rank city vulnerability, and generate city-specific emergency and policy recommendations.
+The project combines **14 data sources** — including NASA POWER, NOAA, Open-Meteo, NDMA, PBS, ILO, NEPRA, K-Electric, and others — into a consolidated dataset. Machine-learning models are then used to predict heatstroke admissions, analyze important predictors, segment observations into heat-risk categories, compare city vulnerability, and generate decision-support outputs.
 
-**Research questions answered:**
-1. How have heatwave conditions changed across the three cities (2021–2025)?
-2. Which climate, infrastructure, and socioeconomic factors drive heatstroke admissions?
-3. Can machine learning accurately predict admissions?
-4. Which city is most vulnerable overall?
-5. Can observations be grouped into meaningful risk categories?
-6. What actions should health departments, power authorities, and city planners take?
+### Research Questions
+
+1. How have heatwave conditions changed across Karachi, Multan, and Murree from 2021–2025?
+2. Which climate, infrastructure, and socioeconomic factors are associated with heatstroke admissions?
+3. How accurately can machine-learning models predict heatstroke admissions?
+4. Which city shows the greatest overall vulnerability?
+5. Can observations be grouped into meaningful heat-risk categories?
+6. What preparedness actions can be derived from the analysis for health, power, and city-planning stakeholders?
 
 ---
 
 ## 📊 Key Results
 
-Five models were trained after removing target-leakage variables (see [Data Notes](#-important-data-notes) below):
+Five predictive approaches were evaluated after excluding identified target-leakage variables:
 
 | Model | R² | MAE | RMSE |
-|---|---|---|---|
+|---|---:|---:|---:|
 | **XGBoost Regressor** | **0.986** | 69.69 | **131.02** |
 | Random Forest Regressor | 0.979 | 80.46 | 158.45 |
 | LightGBM Regressor | 0.960 | 109.61 | 219.27 |
 | Linear Regression | 0.930 | 215.78 | 291.80 |
 | LSTM (sequence forecast) | −0.571 | 856.81 | 1382.86 |
 
-**XGBoost performed best**, followed closely by Random Forest, which also provided the clearest feature-importance insights. The LSTM sequence model underperformed the tabular models and is kept in the project as a forecasting prototype rather than a production model — this is disclosed honestly rather than hidden.
+**XGBoost achieved the strongest reported performance**, followed by Random Forest. The LSTM sequence model performed substantially worse than the tabular models and is therefore treated as a forecasting prototype rather than the project's primary predictive model.
 
-K-Means clustering grouped observations into **Low / Medium / High** heat-risk categories (silhouette score 0.46) for use in dashboards and emergency planning.
+K-Means clustering grouped observations into **Low, Medium, and High** heat-risk categories, achieving a reported **silhouette score of 0.46**. These segments are used in the project's risk-intelligence and dashboard outputs.
+
+> **Important:** Model metrics should be interpreted in the context of the dataset's temporal structure, monthly health outcome, repeated monthly admissions values, and the project's prototype status. They should not be interpreted as evidence of clinical or operational deployment readiness.
 
 ---
 
-## 🧠 What Makes This Project's Modeling Trustworthy
+## 🧠 Target Leakage: What Was Found and Fixed
 
-An earlier version of this project produced a suspiciously perfect Linear Regression (R² = 1.000), which is a classic sign of **target leakage** — the model was accidentally trained on variables derived from the outcome itself (like healthcare burden and economic loss, which happen *because of* heatstroke admissions, not before them).
+An earlier version of the project produced a suspiciously perfect Linear Regression result (**R² = 1.000**). Investigation identified target leakage: some predictors were derived from outcomes that occur after or alongside heatstroke admissions, including healthcare-burden and economic-impact variables.
 
-That version was corrected: post-outcome variables were excluded from the prediction features and retained only for impact analysis and dashboards. The results above are from the **corrected, leakage-free** models. This project treats that mistake and its fix as part of the story, not something to hide.
+These post-outcome variables were removed from the predictive feature set and retained only for appropriate impact analysis and dashboard use.
+
+The reported model results above come from the corrected feature set. The leakage issue and its correction are intentionally documented because identifying and fixing leakage is an important part of building a trustworthy machine-learning workflow.
 
 ---
 
 ## 🗂️ Repository Structure
 
-```
+```text
 heatshield-pakistan/
-├── phase_3_The_human_cost_of_heat.ipynb   # Main analysis notebook (data → models → exports)
-├── clean_dataset.csv                       # Cleaned, model-ready dataset (2,310 rows × 60 columns)
-├── Report_IDS_Final_Corrected.docx         # Full written report (IEEE-style)
-├── phase_3_visualization.pbix              # Power BI dashboard
-├── figures/                                 # Generated charts (created when notebook runs)
-├── outputs/                                  # Model exports, predictions, leaderboard (created when notebook runs)
+├── Copy_of_EDA_Pakistan_Heatwave.ipynb        # EDA, data cleaning & preparation
+├── phase_3_The_human_cost_of_heat_.ipynb      # ML, evaluation, risk segmentation & forecasting
+├── phase_3_visualization.pbix                 # Power BI dashboard
+├── clean_dataset.xlsx                         # Clean dataset generated by Stage 1
+├── figures/                                   # Generated visualizations
+├── outputs/                                   # Predictions, models, leaderboards & Power BI exports
 └── README.md
 ```
+
+### Input Dataset
+
+The **Master Merged Dataset** is the starting input for the project. It is used by the EDA notebook to produce the cleaned dataset.
+
+If the Master Merged Dataset is not included in this repository, it must be provided separately before running Stage 1.
 
 ---
 
 ## ⚙️ How to Run
 
-HeatShield Pakistan is organized as a two-stage notebook pipeline. The notebooks should be executed in the following order.
+HeatShield Pakistan uses a **two-stage notebook pipeline**. The notebooks must be run in order.
 
 ### 🔄 Complete Workflow
 
@@ -91,9 +101,9 @@ This notebook is the starting point of the project.
 
 Upload or place the **Master Merged Dataset Excel file** where the notebook's data-loading section expects it.
 
-This is the raw consolidated dataset used as the starting point for the HeatShield Pakistan analysis.
+This file is the raw consolidated dataset used as the starting point for the HeatShield Pakistan workflow.
 
-#### 2. Run the EDA notebook
+#### 2. Run the EDA Notebook
 
 Run the cells in:
 
@@ -101,29 +111,29 @@ Run the cells in:
 
 from top to bottom.
 
-The notebook performs the exploratory data analysis and data-cleaning workflow, including data inspection, validation, cleaning, transformation, and visualization.
+The notebook performs data inspection, validation, cleaning, transformation, exploratory analysis, and visualization.
 
 #### 3. Generate the Clean Dataset
 
-At the end of the EDA workflow, the notebook produces the cleaned dataset as an **Excel file**.
+The EDA notebook produces the cleaned dataset as an **Excel file**.
 
-This clean dataset becomes the input for the machine-learning stage.
+This generated clean dataset is the required input for Stage 2.
 
 ---
 
 ### Stage 2 — Machine Learning & Risk Intelligence
 
-After the clean dataset has been generated, open:
+After Stage 1 has completed, open:
 
 `phase_3_The_human_cost_of_heat_.ipynb`
 
 #### 4. Provide the Clean Dataset
 
-Upload or place the **Clean Dataset Excel file generated by Stage 1** where the notebook's data-loading section expects it.
+Upload or place the **clean dataset Excel file generated by Stage 1** where the notebook's data-loading section expects it.
 
-Do not skip Stage 1 or manually substitute another dataset, as the machine-learning notebook is designed to use the cleaned output produced by the EDA notebook.
+The machine-learning notebook is intended to use the cleaned output from Stage 1 rather than the original Master Merged Dataset.
 
-#### 5. Run the Machine Learning Notebook
+#### 5. Run the Machine-Learning Notebook
 
 Run the cells in:
 
@@ -131,7 +141,7 @@ Run the cells in:
 
 from top to bottom.
 
-This notebook performs the machine-learning and decision-support workflow, including:
+The notebook performs:
 
 - Loading and validating the clean dataset
 - Feature preprocessing
@@ -152,79 +162,108 @@ Install the required Python libraries before running the notebooks:
 
 ```bash
 pip install pandas numpy scikit-learn xgboost lightgbm tensorflow matplotlib seaborn pillow openpyxl
+```
+
+The machine-learning notebook is designed to continue running if `xgboost`, `lightgbm`, or `tensorflow` are unavailable. Where applicable, it uses transparent NumPy/scikit-learn fallback implementations and labels fallback results accordingly.
+
+For reproduction of the reported XGBoost, LightGBM, and LSTM results, install the corresponding libraries.
+
+### 7. Generated Outputs
+
+After completing both notebook stages, the project generates:
+
+- Cleaned dataset
+- Exploratory analysis figures
+- Model performance results
+- Feature-importance outputs
+- Risk-segmentation results
+- Prediction and forecast files
+- Power BI-ready CSV files
+- Trained model files
+- Model leaderboard
+
+Generated visualizations are stored in:
+
+`figures/`
+
+Generated model and analysis outputs are stored in:
+
+`outputs/`
+
+### 8. Open the Power BI Dashboard
+
+After running Stage 2 and generating the required output files, open:
+
+`phase_3_visualization.pbix`
+
+in **Power BI Desktop** to explore the interactive HeatShield Pakistan decision-support dashboard.
 
 ---
 
 ## 🧰 Tech Stack
 
-- **Language:** Python (pandas, numpy, scikit-learn)
+- **Language:** Python
+- **Data & Analysis:** pandas, NumPy, scikit-learn
 - **Models:** Linear Regression, Random Forest, XGBoost, LightGBM, LSTM (TensorFlow/Keras), K-Means
 - **Visualization:** Matplotlib, Seaborn, Power BI
-- **Methodology:** Time-aware train/test split, per-city lag & rolling features, target-leakage auditing
+- **Methodology:** Time-aware train/test split, per-city lag and rolling features, target-leakage auditing, model comparison, clustering
 
 ---
 
-## ⚠️ Important Data Notes
+## ⚠️ Important Data & Methodology Notes
 
-- **Admissions data is monthly, not daily.** `monthly_heatstroke_admissions` is a monthly figure that is repeated across every day in that month. The dataset has daily rows for weather and infrastructure variables, but the health outcome itself only updates once a month — so the model is predicting *monthly* admission levels, not true day-to-day hospital counts.
-- **Heatstroke figures are drawn partly from news reporting** (Dawn, Express Tribune) to supplement official NDMA numbers, which are known to undercount heat-related deaths. Neither source is a perfect ground truth.
-- This is an **academic prototype**, not a validated clinical or operational forecasting tool. Before any real-world use, it would need to be validated against independently collected daily hospital records.
+### Monthly Health Outcome
 
----
+`monthly_heatstroke_admissions` is a **monthly outcome**, not a daily hospital count.
 
-pip install pandas numpy scikit-learn xgboost lightgbm tensorflow matplotlib seaborn pillow openpyxl
+The dataset contains daily rows for weather and infrastructure variables, while the health outcome is updated at the monthly level and repeated across the daily records belonging to that month. Therefore, the predictive task should be interpreted as predicting **monthly heatstroke admission levels**, not true day-to-day hospital admissions.
 
----
+### Heatstroke Data Sources
 
-## 🧰 Tech Stack
+Heatstroke figures are supplemented partly by news reporting, including Dawn and Express Tribune, alongside available official sources. These sources are not treated as a perfect ground-truth hospital dataset.
 
-- **Language:** Python (pandas, numpy, scikit-learn)
-- **Models:** Linear Regression, Random Forest, XGBoost, LightGBM, LSTM (TensorFlow/Keras), K-Means
-- **Visualization:** Matplotlib, Seaborn, Power BI
-- **Methodology:** Time-aware train/test split, per-city lag & rolling features, target-leakage auditing
+### Prototype Status
 
----
-
-## ⚠️ Important Data Notes
-
-- **Admissions data is monthly, not daily.** `monthly_heatstroke_admissions` is a monthly figure that is repeated across every day in that month. The dataset has daily rows for weather and infrastructure variables, but the health outcome itself only updates once a month — so the model is predicting *monthly* admission levels, not true day-to-day hospital counts.
-- **Heatstroke figures are drawn partly from news reporting** (Dawn, Express Tribune) to supplement official NDMA numbers, which are known to undercount heat-related deaths. Neither source is a perfect ground truth.
-- This is an **academic prototype**, not a validated clinical or operational forecasting tool. Before any real-world use, it would need to be validated against independently collected daily hospital records.
+HeatShield Pakistan is a **data-science prototype and decision-support research project**, not a validated clinical or operational forecasting system. Real-world deployment would require independently collected hospital records, stronger temporal validation, continuous monitoring, and domain-expert validation.
 
 ---
 
 ## 🚀 The HeatShield Pakistan Data Product
 
-Beyond prediction, this project is framed as a decision-support platform with six modules:
+Beyond prediction, the project is designed as a decision-support concept with six modules:
 
-| Module | What It Does |
+| Module | Purpose |
 |---|---|
-| Risk Monitor | Daily city-level risk level and alerts |
-| AI Forecasting Engine | Predicts future admissions, burden, and economic impact |
-| City Vulnerability Intelligence | Ranks cities by combined health, climate, and infrastructure risk |
-| What-If Simulation Lab | Lets planners test scenarios (e.g. "+2 outage hours during a heatwave") |
-| Emergency Planning Assistant | Converts forecasts into staffing, cooling-center, and backup-power actions |
-| Policy Recommendation Engine | City-specific recommendations for Karachi, Multan, and Murree |
+| **Risk Monitor** | Tracks city-level heat-risk conditions and supports alerting concepts |
+| **AI Forecasting Engine** | Generates predicted heatstroke admissions and related analytical outputs |
+| **City Vulnerability Intelligence** | Compares cities using combined health, climate, and infrastructure indicators |
+| **What-If Simulation Lab** | Concept for testing scenarios such as increased outage hours during heatwaves |
+| **Emergency Planning Assistant** | Translates risk signals into staffing, cooling-center, and backup-power actions |
+| **Policy Recommendation Engine** | Generates city-specific preparedness recommendations for Karachi, Multan, and Murree |
+
+> Some modules represent the project's **decision-support design and dashboard concepts** rather than fully deployed real-time systems.
 
 ---
 
 ## 🔭 Future Work
 
-- Live weather feeds and verified daily hospital admission data
-- Satellite urban heat island indicators and GIS neighborhood mapping
-- Real-time outage telemetry from power utilities
-- SMS/public alert integration and automated response logging
+- Live weather feeds and independently verified hospital admission data
+- Satellite-derived urban heat-island indicators and GIS neighborhood mapping
+- Real-time power-outage telemetry
+- Improved temporal forecasting with stronger validation
+- SMS/public-alert integration
+- Automated response logging and intervention evaluation
 
 ---
 
 ## 👥 Authors
 
 **Ayesha Ghani** · **Muhammad Dawood Abbasi** · **Anish Fatima**
-Dept. of Creative Technologies, Air University, Islamabad
-Course: DS-110 Introduction to Data Science · Instructor: Dr. Qurat-ul-Ain
 
 ---
 
 ## 🙏 Acknowledgments
 
-Data accessed from publicly available repositories maintained by NASA, NOAA, Open-Meteo, NDMA, PBS, PMD, ILO, NEPRA, and K-Electric.
+Data were accessed from publicly available repositories and sources associated with NASA, NOAA, Open-Meteo, NDMA, PBS, PMD, ILO, NEPRA, K-Electric, and other referenced providers.
+
+Source details and attribution should be reviewed in the project notebooks and supporting documentation.
