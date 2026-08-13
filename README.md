@@ -172,6 +172,27 @@ pip install pandas numpy scikit-learn xgboost lightgbm tensorflow matplotlib sea
 
 ---
 
+pip install pandas numpy scikit-learn xgboost lightgbm tensorflow matplotlib seaborn pillow openpyxl
+
+---
+
+## 🧰 Tech Stack
+
+- **Language:** Python (pandas, numpy, scikit-learn)
+- **Models:** Linear Regression, Random Forest, XGBoost, LightGBM, LSTM (TensorFlow/Keras), K-Means
+- **Visualization:** Matplotlib, Seaborn, Power BI
+- **Methodology:** Time-aware train/test split, per-city lag & rolling features, target-leakage auditing
+
+---
+
+## ⚠️ Important Data Notes
+
+- **Admissions data is monthly, not daily.** `monthly_heatstroke_admissions` is a monthly figure that is repeated across every day in that month. The dataset has daily rows for weather and infrastructure variables, but the health outcome itself only updates once a month — so the model is predicting *monthly* admission levels, not true day-to-day hospital counts.
+- **Heatstroke figures are drawn partly from news reporting** (Dawn, Express Tribune) to supplement official NDMA numbers, which are known to undercount heat-related deaths. Neither source is a perfect ground truth.
+- This is an **academic prototype**, not a validated clinical or operational forecasting tool. Before any real-world use, it would need to be validated against independently collected daily hospital records.
+
+---
+
 ## 🚀 The HeatShield Pakistan Data Product
 
 Beyond prediction, this project is framed as a decision-support platform with six modules:
