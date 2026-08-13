@@ -66,15 +66,58 @@ heatshield-pakistan/
 
 ## ⚙️ How to Run
 
-1. Clone this repo and make sure `clean_dataset.csv` is in the same folder as the notebook.
-2. Install dependencies:
-   ```bash
-   pip install pandas numpy scikit-learn xgboost lightgbm tensorflow matplotlib seaborn pillow
-   ```
-   > The notebook is written to still run without `xgboost`, `lightgbm`, or `tensorflow` installed — it automatically falls back to transparent NumPy/sklearn implementations and clearly labels them as fallbacks in every output. Installing the real libraries reproduces the exact results in the table above.
-3. Open `phase_3_The_human_cost_of_heat.ipynb` and run all cells top to bottom.
-4. Outputs (figures, Power BI-ready CSVs, trained model, leaderboard) are written to `outputs/` and `figures/`.
-5. Open `phase_3_visualization.pbix` in Power BI Desktop to explore the interactive dashboard.
+The notebook is designed to run from the **Master Merged Dataset** through the complete data science pipeline. You do not need to prepare the clean dataset manually before starting.
+
+### 1. Download or clone this repository
+
+Clone the repository and open:
+
+`phase_3_The_human_cost_of_heat.ipynb`
+
+### 2. Provide the Master Merged Dataset
+
+When running the notebook, upload or place the **Master Merged Dataset Excel file** in the location specified by the notebook's data-loading section.
+
+This Master Merged Dataset is the starting point of the pipeline.
+
+### 3. Run the notebook from top to bottom
+
+Run all cells in order.
+
+The notebook will:
+
+- Load and inspect the Master Merged Dataset
+- Clean and validate the data
+- Handle missing values and data types
+- Perform exploratory data analysis
+- Create the model-ready dataset
+- Save/export the cleaned dataset
+- Preprocess features for machine learning
+- Train and evaluate multiple models
+- Compare model performance
+- Analyze feature importance
+- Perform K-Means heat-risk segmentation
+- Generate prediction and forecast outputs
+- Create visualizations
+- Export Power BI-ready datasets
+- Save the trained model and other project outputs
+
+### 4. Clean Dataset Output
+
+At the end of the data-cleaning stage, the notebook generates the cleaned dataset as:
+
+`clean_dataset.xlsx`
+
+This file contains the processed, model-ready data produced directly from the Master Merged Dataset.
+
+The clean dataset can also be used independently for further analysis or as the input for subsequent project workflows.
+
+### 5. Install required Python libraries
+
+Install the following dependencies before running the notebook:
+
+```bash
+pip install pandas numpy scikit-learn xgboost lightgbm tensorflow matplotlib seaborn pillow openpyxl
 
 ---
 
